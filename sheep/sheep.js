@@ -18,7 +18,7 @@ export class Sheep {
 
     this.x = stageWidth + this.sheepWidth;
     this.y = 0;
-    this.speed = Math.random() * +1;
+    this.speed = Math.random() * + 10;
 
     this.fps = 24;
     // 실제로 타임 스탬프와 비교가 됨
