@@ -22,7 +22,7 @@ function init() {
 
 function render() {
   //frame per second fps 동일화하기
-  requestAnimationFrame(render);
+  window.requestAnimationFrame(render);
   now = Date.now();
   delta = now - then;
   if (delta < interval) {
@@ -30,12 +30,11 @@ function render() {
   }
 
   then = now - (delta % interval);
-  window.addEventListener("load", () => {
-    init();
-    render();
-  });
 }
-
+window.addEventListener("load", () => {
+  init();
+  render();
+});
 window.addEventListener("resize", () => {
   init();
 });
