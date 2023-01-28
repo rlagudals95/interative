@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- svg 필터 값 테스트 라이브러리 dat gui -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.9/dat.gui.min.js" integrity="sha512-WoO4Ih0CDOSLYafy22wZD/mcJ7k0ESLqtQsFa6zFKnEUrbtuGU+GkLtVhgt93xa2qewG5gKEC6CWlN8OaCTSVg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+      html,
+      body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+      canvas {
+        /* filter: blur(50px) contrast(50);
+        background-color: black; */
+        filter: url('#gooey')
+      }
+    </style>
+  </head>
+  <body>
+    <svg>
+      <!-- css로 직접 필터를 주면 컬러에 변화가 생겨서 svg filter 사용 선호 -->
+      <!-- defs 재사용할 수 있게 요소들을 정의할 때 사용 blur나 각종 필터들을 사용할 수 있음 -->
+      <!-- svg fillter test 사이트 https://yoksel.github.io/svg-filters/#/ -->
+      <defs>
+        <filter id="gooey">
+          <feGaussianBlur stdDeviation="40" in="SourceGraphic" result="blur1"/>
+          <feColorMatrix in="blur1" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 100 -23"/>
+        </filter>
+      </defs>
+    </svg>
+    <script type="module" src="./index.js"></script>
+    
+  </body>
+</html>

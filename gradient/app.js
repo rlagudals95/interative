@@ -10,9 +10,17 @@ const COLORS = [
 
 class App {
   constructor() {
-    this.canvas = document.createElement("canvas");
-    document.body.appendChild(this.canvas);
-    this.ctx = this.canvas.getContext("2d");
+
+    this.parent = document.getElementById('gradient-canvas')
+    if (!this.parent.hasChildNodes()) {
+      this.canvas = document.createElement('canvas')
+      this.ctx = this.canvas.getContext('2d')
+      this.parent.appendChild(this.canvas)
+    } else {
+      this.canvas = this.parent.firstElementChild
+      this.ctx = this.canvas.getContext('2d')
+      this.ctx.clearRect(0, 0, this.stageWidth, this.stageHeight)
+    }
 
     this.pixelRatio = window.divicePixelRatio > 1 ? 2 : 1;
 
@@ -35,7 +43,7 @@ class App {
     this.canvas.height = this.stageHeight * this.pixelRatio;
 
     this.ctx.scale(this.pixelRatio, this.pixelRatio);
-    console.log(this.ctx)
+
     this.ctx.globalCompositeOperation = "saturation";
 
     this.createParticles();

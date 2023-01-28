@@ -37,6 +37,5 @@ class App {
 }
 
 window.onload = () => {
-  console.log('?')
   new App();
 };
