@@ -1,19 +1,38 @@
-const canvas = document.createElement("canvas");
 //캔버스 작업을 할땐 캔버스 element style size와 캔버스 고유 사이즈를 맞추자
-
-const canvasWidth = document.body.clientWidth;
-const canvasHeight = document.body.clientHeight;
-
-// devicePixelRatio 줄여서 dpr - 하나의 css pixel을 그릴때 사용되는 장치의 픽셀수
-// 보통 윈도우(1dpr)는 1px에 1픽셀 맥(2dpr)은 1px에 4개의 픽셀
-const dpr = window.devicePixelRatio;
-canvas.width = canvasWidth * dpr;
-canvas.height = canvasHeight * dpr;
-canvas.style.width = canvasWidth + "px";
-canvas.style.height = canvasHeight + "px";
-
+const canvas = document.createElement("canvas");
 const ctx = canvas.getContext("2d");
-ctx.scale(dpr, dpr);
+const dpr = window.devicePixelRatio;
+
+let canvasWidth;
+let canvasHeight;
+let particles;
+
+function init() {
+  canvasWidth = document.body.clientWidth;
+  canvasHeight = document.body.clientHeight;
+
+  // devicePixelRatio 줄여서 dpr - 하나의 css pixel을 그릴때 사용되는 장치의 픽셀수
+  // 보통 윈도우(1dpr)는 1px에 1픽셀 맥(2dpr)은 1px에 4개의 픽셀
+
+  canvas.width = canvasWidth * dpr;
+  canvas.height = canvasHeight * dpr;
+  canvas.style.width = canvasWidth + "px";
+  canvas.style.height = canvasHeight + "px";
+
+  ctx.scale(dpr, dpr);
+
+  particles = [];
+  // 캔버스 크기에 따른 TOTAL 변화
+  const TOTAL = canvasWidth / 10;
+  for (let i = 0; i < TOTAL; i++) {
+    const x = randomNumBetween(0, canvasWidth);
+    const y = randomNumBetween(0, canvasHeight);
+    const radius = randomNumBetween(20, 100);
+    const vy = randomNumBetween(1, 5);
+    const particle = new Particle(x, y, radius, vy);
+    particles.push(particle);
+  }
+}
 
 //dat gui 테스트
 const feGaussianBlur = document.querySelector("feGaussianBlur");
@@ -28,8 +47,8 @@ const controls = new (function () {
 
 let gui = new dat.GUI();
 
-const f1 = gui.addFolder('Gooey Effect'); // 효과별로 폴더 만들기
-const f2 = gui.addFolder('particle properties');
+const f1 = gui.addFolder("Gooey Effect"); // 효과별로 폴더 만들기
+const f2 = gui.addFolder("particle properties");
 f1.open();
 f2.open();
 
@@ -93,20 +112,7 @@ const randomNumBetween = (min, max) => {
   return Math.random() * (max - min + 1) + min;
 };
 
-const TOTAL = 20;
-const stageWidth = document.body.clientWidth;
-const stageHeight = document.body.clientHeight;
 
-let particles = [];
-
-for (let i = 0; i < TOTAL; i++) {
-  const x = randomNumBetween(0, stageWidth);
-  const y = randomNumBetween(0, stageHeight);
-  const radius = randomNumBetween(20, 100);
-  const vy = randomNumBetween(1, 5);
-  const particle = new Particle(x, y, radius, vy);
-  particles.push(particle);
-}
 
 // 60fps를 타겟
 let interval = 1000 / 60;
@@ -139,4 +145,11 @@ function animate() {
   then = now - (delta % interval);
 }
 
-animate();
+window.addEventListener('load', () => {
+  init();
+  animate();
+})
+window.addEventListener('resize', () => {
+  init();
+})
+
