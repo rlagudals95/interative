@@ -1,40 +1,48 @@
-const canvas = document.querySelector("canvas");
-const ctx = canvas.getContext("2d");
-const dpr = window.devicePixelRatio;
-const fps = 60;
-const interval = 1000 / fps;
-let now, delta;
-let then = Date.now();
+import { CanvasOption } from "./js/CanvasOption.js";
 
-let canvasWidth, canvasHeight;
-
-function init() {
-  canvasWidth = innerWidth;
-  canvasHeight = innerHeight;
-
-  canvas.width = canvasWidth * dpr;
-  canvas.height = canvasHeight * dpr;
-  ctx.scale(dpr, dpr);
-
-  canvas.style.width = canvasWidth + "px";
-  canvas.style.height = canvasHeight + "px";
-}
-
-function render() {
-  //frame per second fps 동일화하기
-  window.requestAnimationFrame(render);
-  now = Date.now();
-  delta = now - then;
-  if (delta < interval) {
-    return;
+class Canvas extends CanvasOption {
+  constructor() {
+    super(); // 부모 클래스의 변수, 메소드를 자식 클래스에서 가져다 사용
   }
 
-  then = now - (delta % interval);
+  init() {
+    this.canvasWidth = innerWidth;
+    this.canvasHeight = innerHeight;
+    this.dpr = window.devicePixelRatio;
+    this.canvas.width = this.canvasWidth * this.dpr;
+    this.canvas.height = this.canvasHeight * this.dpr;
+    this.ctx.scale(this.dpr, this.dpr);
+
+    this.canvas.style.width = this.canvasWidth + "px";
+    this.canvas.style.height = this.canvasHeight + "px";
+  }
+
+  render() {
+    let now, delta;
+    let then = Date.now();
+
+    const frame = () => {
+      //frame per second fps 동일화하기
+      requestAnimationFrame(frame);
+      now = Date.now();
+      delta = now - then;
+      if (delta < this.interval) {
+        return;
+      }
+
+      then = now - (delta % this.interval);
+    };
+
+    requestAnimationFrame(frame);
+  }
 }
+
+const canvas = new Canvas();
+
 window.addEventListener("load", () => {
-  init();
-  render();
+  canvas.init();
+  canvas.render();
 });
 window.addEventListener("resize", () => {
-  init();
+  canvas.init();
 });
