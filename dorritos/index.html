@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas id="canvas" width="1000" height="1000"></canvas>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.141.0/build/three.module.js",
+          "GLTFLoader": "https://unpkg.com/three@0.141.0/examples/jsm/loaders/GLTFLoader.js"
+        }
+      }
+    </script>
+    <script type="module">
+      import { GLTFLoader } from "GLTFLoader";
+      import * as THREE from "three";
+
+      const scene = new THREE.Scene();
+      const renderer = new THREE.WebGLRenderer({
+        canvas: document.querySelector("#canvas"),
+        antialias: true
+      });
+      renderer.outputEncoding = THREE.sRGBEncoding;
+
+      let camera = new THREE.PerspectiveCamera(10, 1);
+      camera.position.set(0, 0, 5);
+
+      scene.background = new THREE.Color("");
+      const light = new THREE.DirectionalLight('white', 5);
+      scene.add(light)
+
+      const loader = new GLTFLoader();
+      loader.load("./3d/scene.gltf", (gltf) => {
+
+        scene.add(gltf.scene);
+        renderer.render(scene, camera);
+        function animate(){
+            requestAnimationFrame(animate);
+            gltf.scene.rotation.y -= 0.1;
+            gltf.scene.rotation.x -= 0.01;
+            renderer.render(scene, camera)
+        }
+        animate();
+      });
+    </script>
+  </body>
+</html>
