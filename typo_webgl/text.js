@@ -54,7 +54,8 @@ export class Text {
       }
 
       for (width; width < stageWidth; width += density) {
-        pixel = imageData[width + height * stageWidth * 4 - 1];
+        
+        pixel = imageData[((width + (height * stageWidth)) * 4) - 1];
         if (
           pixel != 0 &&
           width > 0 &&

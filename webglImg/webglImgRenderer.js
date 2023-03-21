@@ -1,4 +1,11 @@
-function renderImageOnCanvas(canvas, imageUrl, x, y, imageWidth, imageHeight) {
+export function renderImageOnCanvas(
+  canvas,
+  imageUrl,
+  x,
+  y,
+  imageWidth,
+  imageHeight
+) {
   const gl = canvas.getContext("webgl");
   const program = createShaderProgram(gl);
 
@@ -10,6 +17,7 @@ function renderImageOnCanvas(canvas, imageUrl, x, y, imageWidth, imageHeight) {
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
   const image = new Image();
   image.src = imageUrl;
+  image.crossOrigin = "anonymous";
   image.onload = function () {
     gl.bindTexture(gl.TEXTURE_2D, texture);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);

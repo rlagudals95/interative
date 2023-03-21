@@ -18,13 +18,6 @@ class App {
         window.addEventListener("resize", this.resize.bind(this), false);
         this.resize();
         requestAnimationFrame(this.animate.bind(this), false);
-        // this.text = new Text ();
-        // this.text.setText(
-        //   'A',
-        //   2,
-        //   document.body.clientWidth,
-        //   document.body.clientHeight
-        // )
       },
     });
   }
